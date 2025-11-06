@@ -53,6 +53,10 @@ if (!isset($_SESSION['username'])) {
         .logout:hover {
             background-color: #006666;
         }
+        hr {
+            width: 80%;
+            margin: auto;
+        }
     </style>
 </head>
 <body>
@@ -66,8 +70,6 @@ if (!isset($_SESSION['username'])) {
 
     <?php
     // ===== Commit 5 – Setup Awal Dashboard Penjualan =====
-    // Membuat daftar produk dengan array
-
     $kode_barang = ["BRG001", "BRG002", "BRG003", "BRG004", "BRG005"];
     $nama_barang = ["Kopi Kapal Api", "Teh Sosro", "Indomie Goreng", "Susu Ultra", "Chitato"];
     $harga_barang = [5000, 4000, 3500, 8000, 10000];
@@ -84,6 +86,43 @@ if (!isset($_SESSION['username'])) {
         echo "</tr>";
     }
 
+    echo "</table>";
+
+    // ===== Commit 6 – Logika Penjualan Random =====
+    echo "<h2 style='text-align:center;'>Simulasi Transaksi Penjualan (Random)</h2>";
+
+    $beli = [];       // array untuk menyimpan kode barang yang dibeli
+    $jumlah = [];     // array untuk jumlah pembelian setiap barang
+    $total = [];      // total harga tiap barang
+    $grandtotal = 0;  // total semua pembelian
+
+    echo "<table>";
+    echo "<tr><th>Kode Barang</th><th>Nama Barang</th><th>Harga (Rp)</th><th>Jumlah Beli</th><th>Total (Rp)</th></tr>";
+
+    // Menampilkan 5 pembelian acak
+    for ($i = 0; $i < 5; $i++) {
+        $acak = rand(0, count($kode_barang) - 1); // memilih barang acak
+        $jumlah_beli = rand(1, 5); // jumlah acak antara 1–5
+
+        $beli[] = $kode_barang[$acak];
+        $jumlah[] = $jumlah_beli;
+        $total_harga = $harga_barang[$acak] * $jumlah_beli;
+        $total[] = $total_harga;
+        $grandtotal += $total_harga;
+
+        echo "<tr>";
+        echo "<td>" . $kode_barang[$acak] . "</td>";
+        echo "<td>" . $nama_barang[$acak] . "</td>";
+        echo "<td>" . number_format($harga_barang[$acak], 0, ',', '.') . "</td>";
+        echo "<td>" . $jumlah_beli . "</td>";
+        echo "<td>" . number_format($total_harga, 0, ',', '.') . "</td>";
+        echo "</tr>";
+    }
+
+    echo "<tr style='font-weight:bold; background-color:#e0f7f7;'>";
+    echo "<td colspan='4'>Grand Total</td>";
+    echo "<td>Rp " . number_format($grandtotal, 0, ',', '.') . "</td>";
+    echo "</tr>";
     echo "</table>";
     ?>
 
