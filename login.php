@@ -1,25 +1,25 @@
 <?php
 session_start();
 
-// Cek apakah user sudah login
+// Jika user sudah login, langsung ke dashboard
 if (isset($_SESSION['username'])) {
     header("Location: dashboard.php");
     exit;
 }
 
-// Proses login ketika form dikirim
+// Proses login saat form dikirim
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    // Data login statis
+    // Login statis
     if ($username === 'admin' && $password === '1234') {
         $_SESSION['username'] = $username;
         $_SESSION['role'] = 'Admin';
         header("Location: dashboard.php");
         exit;
     } else {
-        $error = "Username atau password salah!";
+        $error = "⚠️ Username atau password salah!";
     }
 }
 ?>
@@ -35,16 +35,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-family: Arial, sans-serif;
             background: linear-gradient(120deg, #00c9a7, #92fe9d);
             display: flex;
-            height: 100vh;
             justify-content: center;
             align-items: center;
+            height: 100vh;
         }
-        .login-container {
+        .login-box {
             background: #fff;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
             width: 300px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
         }
         h2 {
             text-align: center;
@@ -52,10 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         input {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             margin: 8px 0;
-            border: 1px solid #ccc;
             border-radius: 8px;
+            border: 1px solid #ccc;
         }
         button {
             width: 100%;
@@ -69,22 +69,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         button:hover {
             background: #00b894;
         }
-        p.error {
+        .error {
             color: red;
             text-align: center;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Form Login</h2>
+    <div class="login-box">
+        <h2>Login</h2>
         <?php if (!empty($error)) echo "<p class='error'>$error</p>"; ?>
         <form method="post" action="">
             <label>Username:</label>
-            <input type="text" name="username" placeholder="Masukkan username" required>
+            <input type="text" name="username" required placeholder="Masukkan username">
 
             <label>Password:</label>
-            <input type="password" name="password" placeholder="Masukkan password" required>
+            <input type="password" name="password" required placeholder="Masukkan password">
 
             <button type="submit">Login</button>
         </form>
