@@ -25,7 +25,7 @@ if (!isset($_SESSION['username'])) {
         table {
             margin: 20px auto;
             border-collapse: collapse;
-            width: 70%;
+            width: 75%;
         }
         table, th, td {
             border: 1px solid #555;
@@ -80,49 +80,52 @@ if (!isset($_SESSION['username'])) {
 
     for ($i = 0; $i < count($kode_barang); $i++) {
         echo "<tr>";
-        echo "<td>" . $kode_barang[$i] . "</td>";
-        echo "<td>" . $nama_barang[$i] . "</td>";
+        echo "<td>{$kode_barang[$i]}</td>";
+        echo "<td>{$nama_barang[$i]}</td>";
         echo "<td>" . number_format($harga_barang[$i], 0, ',', '.') . "</td>";
         echo "</tr>";
     }
-
     echo "</table>";
 
-    // ===== Commit 6 – Logika Penjualan Random =====
-    echo "<h2 style='text-align:center;'>Simulasi Transaksi Penjualan (Random)</h2>";
+    // ===== Commit 7 – Perhitungan Total dengan foreach =====
+    echo "<h2 style='text-align:center;'>Detail Pembelian (Simulasi)</h2>";
 
-    $beli = [];       // array untuk menyimpan kode barang yang dibeli
-    $jumlah = [];     // array untuk jumlah pembelian setiap barang
-    $total = [];      // total harga tiap barang
-    $grandtotal = 0;  // total semua pembelian
+    // Data pembelian simulasi
+    $pembelian = [
+        ["kode" => "BRG001", "nama" => "Kopi Kapal Api", "harga" => 5000, "jumlah" => 3],
+        ["kode" => "BRG003", "nama" => "Indomie Goreng", "harga" => 3500, "jumlah" => 5],
+        ["kode" => "BRG005", "nama" => "Chitato", "harga" => 10000, "jumlah" => 2],
+    ];
 
     echo "<table>";
-    echo "<tr><th>Kode Barang</th><th>Nama Barang</th><th>Harga (Rp)</th><th>Jumlah Beli</th><th>Total (Rp)</th></tr>";
+    echo "<tr>
+            <th>Kode Barang</th>
+            <th>Nama Barang</th>
+            <th>Harga (Rp)</th>
+            <th>Jumlah Beli</th>
+            <th>Total (Rp)</th>
+          </tr>";
 
-    // Menampilkan 5 pembelian acak
-    for ($i = 0; $i < 5; $i++) {
-        $acak = rand(0, count($kode_barang) - 1); // memilih barang acak
-        $jumlah_beli = rand(1, 5); // jumlah acak antara 1–5
+    $grandtotal = 0;
 
-        $beli[] = $kode_barang[$acak];
-        $jumlah[] = $jumlah_beli;
-        $total_harga = $harga_barang[$acak] * $jumlah_beli;
-        $total[] = $total_harga;
-        $grandtotal += $total_harga;
+    // Gunakan foreach untuk menghitung total per item
+    foreach ($pembelian as $item) {
+        $total = $item['harga'] * $item['jumlah'];
+        $grandtotal += $total;
 
         echo "<tr>";
-        echo "<td>" . $kode_barang[$acak] . "</td>";
-        echo "<td>" . $nama_barang[$acak] . "</td>";
-        echo "<td>" . number_format($harga_barang[$acak], 0, ',', '.') . "</td>";
-        echo "<td>" . $jumlah_beli . "</td>";
-        echo "<td>" . number_format($total_harga, 0, ',', '.') . "</td>";
+        echo "<td>{$item['kode']}</td>";
+        echo "<td>{$item['nama']}</td>";
+        echo "<td>" . number_format($item['harga'], 0, ',', '.') . "</td>";
+        echo "<td>{$item['jumlah']}</td>";
+        echo "<td>" . number_format($total, 0, ',', '.') . "</td>";
         echo "</tr>";
     }
 
-    echo "<tr style='font-weight:bold; background-color:#e0f7f7;'>";
-    echo "<td colspan='4'>Grand Total</td>";
-    echo "<td>Rp " . number_format($grandtotal, 0, ',', '.') . "</td>";
-    echo "</tr>";
+    echo "<tr style='font-weight:bold; background-color:#e0f7f7;'>
+            <td colspan='4'>Grand Total</td>
+            <td>Rp " . number_format($grandtotal, 0, ',', '.') . "</td>
+          </tr>";
     echo "</table>";
     ?>
 
